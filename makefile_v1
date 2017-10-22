@@ -1,0 +1,5 @@
+all: Polynomial_v1.o poly_class_v1.o 
+	g++ Polynomial_v1.o poly_class_v1.o -o Polynomial
+
+%.o: %.cpp %.h
+	g++ -c $<
