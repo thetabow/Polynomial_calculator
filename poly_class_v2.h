@@ -35,3 +35,5 @@ Z
 
 void display_poly(Polynomial& p, bool integral_only = false);
 void user_poly(Polynomial& p);
+
+//make exponent function

@@ -9,7 +9,7 @@ int main(int argc, char*argv[])
 	user_poly(poly[1]);	
 	display_poly(poly[1]);
 
-	poly[2] = (poly[0] + poly[1]);
+	/*poly[2] = (poly[0] + poly[1]);
 	cout << "The sum of the 2 polynomials is: " ;
 	display_poly(poly[2]);
 
@@ -40,6 +40,14 @@ int main(int argc, char*argv[])
 	poly[2] = poly[1]++;
 	cout << "The indefinite integral of the second polynomial is: ";
 	display_poly(poly[2], true);
+
+	poly[2] = poly[0] * 5;
+	cout << "The scalar product of the first polynomial and 5 is: ";
+	display_poly(poly[2]);*/
+
+	poly[2] = poly[0] / poly[1];
+	cout << "The quotient of polynomial 1 divided by polynomial 2 is: ";
+	display_poly(poly[2]);
 
 	cout << endl << "Thanks bye" << endl;
 

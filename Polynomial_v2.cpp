@@ -72,7 +72,7 @@ RETURNS: the sum of the polynomials
 NOTES: makes use of the []operator to ensure if the polynomials' degrees are different that it's not adding 
 	   garbage
 ------------------------------------------------------------------------------------------------------------*/
-Polynomial Polynomial::operator + (const Polynomial& rhs)
+Polynomial Polynomial::operator + (const Polynomial& rhs) const
 {
 	int deg = MAX(get_degree(), rhs.get_degree());
 	Polynomial sum(deg);
@@ -93,7 +93,7 @@ RETURNS: the difference between the 2 polynomials
 NOTES: makes use of the []operator to ensure if the polynomials' degrees are different that it's not 
 	   subtracting garbage
 ------------------------------------------------------------------------------------------------------------*/
-Polynomial Polynomial::operator - (const Polynomial& rhs)
+Polynomial Polynomial::operator - (const Polynomial& rhs) const
 {
 	int deg = MAX(get_degree(), rhs.get_degree());
 	Polynomial sum(deg);
@@ -112,7 +112,7 @@ RETURNS: the product of the 2 polynomials
 NOTES: makes use of the []operator to ensure if the polynomials' degrees are different that it's not 
 	   multiplying garbage garbage
 ------------------------------------------------------------------------------------------------------------*/
-Polynomial Polynomial::operator * (const Polynomial& rhs)
+Polynomial Polynomial::operator * (const Polynomial& rhs) const
 {
 	int deg = get_degree() + rhs.get_degree();
 	Polynomial product(deg);
@@ -125,6 +125,46 @@ Polynomial Polynomial::operator * (const Polynomial& rhs)
 		}
     }
       return product;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+								* overload operator
+PURPOSE: scalar multiplication of polynomial times a constant
+RETURNS: the product of the polynomial and the constant
+NOTES: polynomial must be on the left, int on right (later function will be able to do either)
+------------------------------------------------------------------------------------------------------------*/
+Polynomial Polynomial::operator * (const int scalar) const
+{
+	Polynomial product(get_degree());
+	for(int i = 0; i <= get_degree(); i++)
+	{
+		product.coeff[i] = operator[](i) * scalar;
+	}
+	return product;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+								/overload operator
+PURPOSE: divide polynomials
+RETURNS: quotient
+NOTES: 
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial Polynomial::operator / (const Polynomial& rhs) const
+{
+	Polynomial quotient(get_degree() - rhs.get_degree());
+	Polynomial remainder();
+	Polynomial working(get_degree());
+	working = *this;
+	coeffT scalar;
+
+	for(int j = get_degree(); j - rhs.get_degree() >= 0; j--)
+	{
+		quotient.coeff[j - rhs.get_degree()] = working[j]/rhs[rhs.get_degree()];
+		working = working - (rhs * quotient);
+		
+	}
+	Polynomial Remainder = working;
+	return quotient;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
