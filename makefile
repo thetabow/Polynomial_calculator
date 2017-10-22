@@ -3,3 +3,6 @@ all: Polynomial_v2.o poly_class_v2.o
 
 %.o: %.cpp %.h
 	g++ -c $<
+
+clean:
+	rm -rf ./*.o

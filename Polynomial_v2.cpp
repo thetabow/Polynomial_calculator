@@ -20,7 +20,7 @@ ARGUMENTS: vector (of type int) reference
 RETURNS: void
 NOTES: sets the polynomial's coefficient vector
 ------------------------------------------------------------------------------------------------------------*/
-void Polynomial::set_poly(vector<float>& coefficients)
+void Polynomial::set_poly(vector<coeffT>& coefficients)
 {
 	coeff.resize(coefficients.size());
 	for(int i = 0; i < coefficients.size(); i++)
@@ -53,7 +53,7 @@ RETURNS: coefficient corresponding to the given degree
 NOTES: the vector of coefficientsonly stores as far as the largest non-zero degree, this ensures that if trying
 	   to access a higher degree than that, 0 is received instead of garbage out of the vector
 ------------------------------------------------------------------------------------------------------------*/
-int Polynomial::operator[] (int deg) const
+coeffT Polynomial::operator[] (int deg) const
 {
 	if(deg > get_degree())
 	{
@@ -173,13 +173,4 @@ int Polynomial::get_degree() const
 {
 	return coeff.size() - 1;
 }
-
-
-
-
- /*   dont need this anymore because of [] operator function
-int Polynomial::get_coeff(int index) const
-{
-	return coeff[index];
-}*/
 

@@ -37,6 +37,10 @@ int main(int argc, char*argv[])
 	cout << "The indefinite integral of the first polynomial is: ";
 	display_poly(poly[2], true);
 
+	poly[2] = poly[1]++;
+	cout << "The indefinite integral of the second polynomial is: ";
+	display_poly(poly[2], true);
+
 	cout << endl << "Thanks bye" << endl;
 
 //	poly[0] + poly[1];
@@ -48,9 +52,9 @@ int main(int argc, char*argv[])
 //returns the vector of coefficients
 void user_poly(Polynomial& p)
 {
-	vector<float> c;
+	vector<coeffT> c;
 	int deg;
-	float coeff;
+	coeffT coeff;
 	cout << "Enter degree of polynomial: " << endl;
 	cin >> deg;
 	cout << "Enter " << deg + 1 << " coefficients..." << endl << endl;
