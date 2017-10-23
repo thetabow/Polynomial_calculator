@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------------------------------------
-FILE NAME: poly_class_v2.h
+FILE NAME: poly_class_v3.h
 
 DESCRITION: header file for Polynomial project
 
@@ -26,16 +26,17 @@ Zuriah Quinton		10-20-17		finalize work on v1: input output, add and subtract wo
 									functional, display works, still using vector class 
 Zuriah Quinton		10-21-17		long division, scalar multiplication, integration, polynomial 
 									multiplication all implemented
-
+Zuriah Quinton		10-22-17		
 
 
 ------------------------------------------------------------------------------------------------------------*/
 
-#include "Polynomial_v2.h"
+#include "Polynomial_v3.h"
 #include <iostream>
 #include <vector>
 
 void display_poly(Polynomial& p, bool integral_only = false);
 void user_poly(Polynomial& p);
+
 
 //make exponent function
