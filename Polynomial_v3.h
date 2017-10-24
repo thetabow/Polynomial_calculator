@@ -21,11 +21,17 @@ public:
 	Polynomial& operator -- (int);
 	Polynomial& operator ++ (int);
 	Polynomial operator = (const Polynomial& p);
+	Polynomial operator = (int the_constant);
 	Polynomial operator + (const Polynomial& rhs) const;
+	Polynomial& operator += (const Polynomial& rhs);
 	Polynomial operator - (const Polynomial& rhs) const;
+	Polynomial& operator -= (const Polynomial& rhs);
 	Polynomial operator * (const Polynomial& rhs) const; 
 	Polynomial operator * (int scalar) const; 
 	Polynomial operator / (const Polynomial& rhs) const;
+	Polynomial operator % (const Polynomial& rhs) const;
+	Polynomial& operator <<= (int shift);
+	Polynomial& operator >>= (int shift);
 	coeffT operator [](int degree) const;
 	//~Polynomial();
 };

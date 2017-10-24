@@ -49,6 +49,22 @@ Polynomial Polynomial::operator = (const Polynomial& p)
 }
 
 /*-----------------------------------------------------------------------------------------------------------
+								= operator overload
+PURPOSE: assign contents of int object to a Polynomial as a constant
+RETURNS: the constant assigned except now as a polynomial of degree 0
+NOTES: 
+------------------------------------------------------------------------------------------------------------*/
+Polynomial Polynomial::operator = (int the_constant)
+{
+	integral_only = false;
+	coeff.resize(1);
+	
+	coeff[0] = the_constant;
+
+	return *this;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
 								[] operator overload
 PURPOSE: incase of trying to access an array element that doesnt exist, it will return 0
 RETURNS: coefficient corresponding to the given degree
@@ -86,7 +102,17 @@ Polynomial Polynomial::operator + (const Polynomial& rhs) const
       return sum;
 }
 
-
+/*-----------------------------------------------------------------------------------------------------------
+									+= overload operator
+PURPOSE: adds the rhs polynomial to this and makes this = the sum
+RETURNS this + rhs
+NOTES:
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial& Polynomial::operator += (const Polynomial& rhs) 
+{
+	*this = *this + rhs;
+	return *this;
+}
 
 /*-----------------------------------------------------------------------------------------------------------
 								- overload operator
@@ -105,6 +131,18 @@ Polynomial Polynomial::operator - (const Polynomial& rhs) const
 		sum.coeff[i] = operator[](i) - rhs[i];
     }
       return sum;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+									-= overload operator
+PURPOSE: subtracts the rhs polynomial from this and makes this = the diference
+RETURNS this - rhs
+NOTES:
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial& Polynomial::operator -= (const Polynomial& rhs) 
+{
+	*this = *this - rhs;
+	return *this;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
@@ -154,19 +192,52 @@ NOTES:
 Polynomial Polynomial::operator / (const Polynomial& rhs) const
 {
 	Polynomial quotient(get_degree() - rhs.get_degree());
-	Polynomial remainder();
 	Polynomial working(get_degree());
 	working = *this;
-	coeffT scalar;
+	coeffT lead_coeff_rhs = rhs[rhs.get_degree()];
 
 	for(int j = get_degree(); j - rhs.get_degree() >= 0; j--)
 	{
-		quotient.coeff[j - rhs.get_degree()] = working[j]/rhs[rhs.get_degree()];
-		working = working - (rhs * quotient);
+		Polynomial new_coeff(1);
+		new_coeff.coeff[0] = working[j]/lead_coeff_rhs;	//is declaring this every loop bad?
+		new_coeff <<= j - rhs.get_degree();
+		quotient += new_coeff;
+		working -= (rhs * new_coeff);
+
 		
 	}
-	Polynomial Remainder = working;
+	Polynomial remainder;
+	remainder = working;
 	return quotient;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+								%overload operator
+PURPOSE: part of dividing polynomials
+RETURNS: the remainder after division
+NOTES: 
+-----------------------------------------------------------------------------------------------------------*/
+
+Polynomial Polynomial::operator % (const Polynomial& rhs) const
+{
+	Polynomial quotient(get_degree() - rhs.get_degree());
+	Polynomial working(get_degree());
+	working = *this;
+	coeffT lead_coeff_rhs = rhs[rhs.get_degree()];
+
+	for(int j = get_degree(); j - rhs.get_degree() >= 0; j--)
+	{
+		Polynomial new_coeff(1);
+		new_coeff.coeff[0] = working[j]/lead_coeff_rhs;	//is declaring this every loop bad?
+		new_coeff <<= j - rhs.get_degree();
+		quotient += new_coeff;
+		working -= (rhs * new_coeff);
+
+		
+	}
+	Polynomial remainder;
+	remainder = working;
+	return remainder;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
@@ -198,6 +269,31 @@ Polynomial& Polynomial::operator ++ (int)
 		coeff[i] = coeff[i - 1]/i;
 	}
 	integral_only = true;
+	return *this;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+									<<= overload operator
+PURPOSE: shifts all coefficients to the next higher order the amount of times specified by the shift
+RETURNS: result
+NOTES:
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial& Polynomial::operator <<= (int shift)
+{
+	
+	coeff.insert(coeff.begin(), shift, 0.0);	//position is like this not just 0 lol show alex
+	return *this;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+									>>= overload operator
+PURPOSE: shifts all coefficients to the next lower order the amount of times specified by the shift
+RETURNS: result
+NOTES:
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial& Polynomial::operator >>= (int shift)
+{
+	coeff.erase(coeff.begin(), coeff.begin()+shift);
 	return *this;
 }
 
@@ -235,8 +331,9 @@ int exp(int a, int b)
 
 /*------------------------------------------------------------------------------------------------------------
 								<< overload operator 
-PURPOSE: 
-
+PURPOSE: be able to output a Polynomial object
+RETURNS: ostream reference
+NOTES: only a friend of the Polynomial class
 ------------------------------------------------------------------------------------------------------------*/
 ostream& operator << (ostream& lhs, Polynomial& rhs)
 {
@@ -262,3 +359,11 @@ ostream& operator << (ostream& lhs, Polynomial& rhs)
 	lhs << "\n\n";
 	return lhs;
 }
+
+/*------------------------------------------------------------------------------------------------------------
+								>> overload operator 
+PURPOSE: takes in user input for polynomial
+RETURNS: ostream reference
+NOTES: only a friend of the Polynomial class
+------------------------------------------------------------------------------------------------------------*/
+//nothing yet

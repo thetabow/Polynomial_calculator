@@ -26,7 +26,9 @@ Zuriah Quinton		10-20-17		finalize work on v1: input output, add and subtract wo
 									functional, display works, still using vector class 
 Zuriah Quinton		10-21-17		long division, scalar multiplication, integration, polynomial 
 									multiplication all implemented
-Zuriah Quinton		10-22-17		
+Zuriah Quinton		10-22-17		replaced display_poly with << operator
+Zuriah Quinton		10-23-17		realized long division is broken, added +=, -=, <<=, >>= to facilitate
+									long division process
 
 
 ------------------------------------------------------------------------------------------------------------*/
@@ -35,7 +37,6 @@ Zuriah Quinton		10-22-17
 #include <iostream>
 #include <vector>
 
-void display_poly(Polynomial& p, bool integral_only = false);
 void user_poly(Polynomial& p);
 
 

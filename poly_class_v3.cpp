@@ -5,11 +5,13 @@ int main(int argc, char*argv[])
 	Polynomial poly[3];
 
 	user_poly(poly[0]);
+	//cin >> poly[0];
 	cout << poly[0];
-	user_poly(poly[1]);	
+	user_poly(poly[1]);
+	//cin >> poly[1];	
 	cout << poly[1];
 
-	poly[2] = (poly[0] + poly[1]);
+	/*poly[2] = (poly[0] + poly[1]);
 	cout << "The sum of the 2 polynomials is: " ;
 	cout << poly[2];
 
@@ -27,12 +29,16 @@ int main(int argc, char*argv[])
 
 	poly[2] = poly[0] * 5;
 	cout << "The scalar product of the first polynomial and 5 is: ";
-	cout << poly[2];
+	cout << poly[2];*/
 
 	poly[2] = poly[0] / poly[1];
 	cout << "The quotient of polynomial 1 divided by polynomial 2 is: ";
 	cout << poly[2];
 
+	poly[2] = poly[0] % poly[1];
+	cout << "With remainder: ";
+	cout << poly[2];
+/*
 	poly[2] = poly[0];
 	cout << "The derivative of the first polynomial is: ";
 	cout << poly[2]--;
@@ -47,7 +53,7 @@ int main(int argc, char*argv[])
 
 	poly[2] = poly[1];
 	cout << "The indefinite integral of the second polynomial is: ";
-	cout << poly[2]++;
+	cout << poly[2]++;*/
 
 	cout << endl << "Thanks bye" << endl;
 	return 0;	
@@ -57,6 +63,9 @@ int main(int argc, char*argv[])
 //returns the vector of coefficients
 void user_poly(Polynomial& p)
 {
+
+
+
 	vector<coeffT> c;
 	int deg;
 	coeffT coeff;
