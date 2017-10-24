@@ -280,7 +280,7 @@ NOTES:
 -----------------------------------------------------------------------------------------------------------*/
 Polynomial& Polynomial::operator <<= (int shift)
 {
-	
+
 	coeff.insert(coeff.begin(), shift, 0.0);	//position is like this not just 0 lol show alex
 	return *this;
 }
@@ -337,26 +337,27 @@ NOTES: only a friend of the Polynomial class
 ------------------------------------------------------------------------------------------------------------*/
 ostream& operator << (ostream& lhs, Polynomial& rhs)
 {
-	lhs << "\n\n\t";
-
 	for (int i = rhs.get_degree(); i >= 0 ; i--)
 	{
-		if (i < rhs.get_degree())
+		if(rhs[i] != 0)
 		{
-			if(rhs[i] >=0) 
-				lhs << " +";
-			else 
-				lhs << " ";
+			if (i < rhs.get_degree())
+			{
+				if(rhs[i] >=0) 
+					lhs << " +";
+				else 
+					lhs << " ";
+			}
+			lhs << rhs[i];
+			if (i>1) 
+				lhs << "x^" << i;
+			if(i==1)
+				lhs << "x";
 		}
-		lhs << rhs[i];
-		if (i>1) 
-			lhs << "x^" << i;
-		if(i==1)
-			lhs << "x";
 	}
 	if(rhs.integral_only)
 		lhs << " +C";
-	lhs << "\n\n";
+
 	return lhs;
 }
 

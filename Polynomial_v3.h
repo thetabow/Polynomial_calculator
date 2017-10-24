@@ -16,7 +16,7 @@ private:
 	bool integral_only;
 public:
 	Polynomial(int deg = 0);
-	void set_poly(vector<coeffT>& coefficients); //takes care of setting degree and coefficients
+	void set_poly(vector<coeffT>& coefficients); //takes care of setting coefficients
 	int get_degree() const;
 	Polynomial& operator -- (int);
 	Polynomial& operator ++ (int);

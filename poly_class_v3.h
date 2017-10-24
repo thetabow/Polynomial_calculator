@@ -28,7 +28,7 @@ Zuriah Quinton		10-21-17		long division, scalar multiplication, integration, pol
 									multiplication all implemented
 Zuriah Quinton		10-22-17		replaced display_poly with << operator
 Zuriah Quinton		10-23-17		realized long division is broken, added +=, -=, <<=, >>= to facilitate
-									long division process
+									long division process...fixed long division
 
 
 ------------------------------------------------------------------------------------------------------------*/
