@@ -1,3 +1,8 @@
+#ifndef __POLYNOMIAL_H__
+#define __POLYNOMIAL_H__
+
+#include "Fraction.h"
+
 #include <iostream>
 #include <vector>
 
@@ -6,7 +11,7 @@ using namespace std;
 #define MAX(x,y) ((x) > (y) ? (x) : (y))
 //#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])     maybe make this size of a vector 
 
-typedef float coeffT;
+typedef Fraction coeffT;
 
 class Polynomial
 {
@@ -37,3 +42,6 @@ public:
 };
 
 int exp(int a, int b);
+
+
+#endif //__POLYNOMIAL_H__

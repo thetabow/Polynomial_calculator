@@ -310,47 +310,37 @@ int Polynomial::get_degree() const
 }
 
 /*------------------------------------------------------------------------------------------------------------
-FUNCTION NAME: exp
-PURPOSE: exponent function
-RETURNS: a to the power of b
-NOTES:
-------------------------------------------------------------------------------------------------------------*/
-int exp(int a, int b)
-{
-	int result = 1;
-	while(b)
-	{
-		if(b&1)
-			result *=a;
-		b>>=1;
-		a *= a;
-	}
-	return result;
-}
-
-
-/*------------------------------------------------------------------------------------------------------------
 								<< overload operator 
 PURPOSE: be able to output a Polynomial object
 RETURNS: ostream reference
-NOTES: only a friend of the Polynomial class
+NOTES: only a friend of the Polynomial class, only works for certain font in putty //ask alex which font to use
 ------------------------------------------------------------------------------------------------------------*/
 ostream& operator << (ostream& lhs, Polynomial& rhs)
 {
+	const char* super[10] = {
+				"\u2070", "\u00B9", "\u00B2", "\u00B3", "\u2074", 
+				"\u2075", "\u2076", "\u2077", "\u2078", "\u2079"};
+	const char* sub[10] = {
+				"\u2080", "\u2081", "\u2082", "\u2083", "\u2084", 
+				"\u2085", "\u2086", "\u2087", "\u2088", "\u2089"};
+	
 	for (int i = rhs.get_degree(); i >= 0 ; i--)
 	{
-		if(rhs[i] != 0)
+		if(double(rhs[i]) != 0)
 		{
 			if (i < rhs.get_degree())
 			{
-				if(rhs[i] >=0) 
+				if(double(rhs[i]) >= 0) 
 					lhs << " +";
 				else 
 					lhs << " ";
 			}
+
+
+
 			lhs << rhs[i];
 			if (i>1) 
-				lhs << "x^" << i;
+				lhs << "x" << super[i];
 			if(i==1)
 				lhs << "x";
 		}
