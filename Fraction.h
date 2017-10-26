@@ -16,9 +16,8 @@ class Fraction {
 	friend istream& operator >> (istream& lhs, Fraction& frac);
 
 private:
-	unsigned int numerator;
-	unsigned int denominator;
-	bool positive; 
+	int numerator;
+	int denominator;
 	Fraction& operator -- (int);
 public:
 

@@ -2,45 +2,36 @@
 
 Fraction::Fraction(int num, int denom)
 {
-	positive = true;
-	if(num < 0)
-		numerator = num*-1;
-	else
-		numerator = num;
+	numerator = num;
+	denominator = denom;
+
 	if(denom != 0)
 	{
 		if(denom < 0)
+		{
+			numerator *=-1;
 			denominator = denom*-1;
+		}
 		else
 			denominator = denom;
 	}
 	else 
 		denominator = 1;
-	if(num*denom < 0)
-		positive = false;
+	cout << numerator;
+	cout << "/" << denominator << endl;
 }
 
-
+		
 Fraction& Fraction::operator = (const Fraction& f)
 {
 	numerator = f.numerator;
 	denominator = f.denominator;
-	positive = f.positive;
 	return *this;
 }
 
 Fraction& Fraction::operator = (const int number)
 {
-	if(number < 0)
-	{
-		positive = false;
-		numerator = number*-1;
-	}
-	else
-	{
-		positive = true;
-		numerator = number;
-	}
+	numerator = number;
 	denominator = 1;
 	return *this;
 }
@@ -67,39 +58,16 @@ Fraction& Fraction::operator -- (int)	//postfix operator
 Fraction Fraction::operator * (const Fraction& f) const
 {
 	Fraction product(numerator * f.numerator, denominator * f.denominator);
-	if( (positive && f.positive) || (!positive && !f.positive) )
-		product.positive = true;
-	else
-		product.positive = false;
 	return product--;
 }
 Fraction Fraction::operator * (int scalar) const
 {
-	if(scalar > 0)
-	{
-		Fraction product(numerator * scalar, denominator);
-		product.positive = true;
-			return product--;
-	}
-	else if(scalar < 0)
-	{
-		scalar *= -1;
-		Fraction product(numerator * scalar, denominator);
-		product.positive = false;
-			return product--;
-	}
-	else
-	{
-		Fraction product(0);
-		product.positive = true;
-			return product--;
-	}
+	Fraction product(numerator * scalar, denominator);
+	return product--;
 }
 
 Fraction& Fraction::operator *= (const Fraction& f) 
 {
-	if(!f.positive)
-		positive = !positive;
 	*this = *this * f;
 	return *this;
 }
@@ -109,35 +77,18 @@ Fraction& Fraction::operator *= (const Fraction& f)
 Fraction Fraction::operator / (const Fraction& f) const
 {
 	Fraction quotient(numerator * f.denominator, denominator * f.numerator);
-
-	if( (positive && f.positive) || (!positive && !f.positive) )
-		quotient.positive = true;
-	else
-		quotient.positive = false;
-
 	return quotient--;
 }
 
 
 Fraction Fraction::operator / (int dividend) const
 {
-	bool sign = true;
-	if(dividend < 0)
-	{
-		sign = false;
-		dividend *= -1;
-	}
 	Fraction quotient(numerator, denominator * dividend);
-	quotient.positive = sign;
 	return quotient--;
 }
 
 Fraction& Fraction::operator /= (const Fraction& f)
 {
-	if( (positive&&f.positive) || (!positive && !f.positive) )
-		positive = true;
-	else 
-		positive = false;
 	*this = *this / f;
 	return *this;
 }
@@ -147,9 +98,6 @@ Fraction Fraction::operator + (const Fraction& frac) const
 {
 	Fraction sum;
 	Fraction f = frac;
-
-if( (positive&&f.positive) || (!positive && !f.positive) )
-{
 	do{
 		if(denominator == f.denominator)
 		{
@@ -164,27 +112,13 @@ if( (positive&&f.positive) || (!positive && !f.positive) )
 
 	}while(1);
 }
-else if(positive && !f.positive)
-{
-	Fraction abs_f = f;
-	abs_f.positive = true;
-	sum = *this - abs_f;
-	return sum--;
-}
-else if(f.positive && !positive)
-{
-	Fraction abs_f = *this;
-	abs_f.positive = true;
-	sum = f - abs_f;
-	return sum--;
-}
 
-}
 Fraction Fraction::operator + (int numb) const
 {
 	Fraction frac(numb);
 	return *this + frac;
 }
+
 Fraction& Fraction::operator +=(const Fraction& f)
 {
 	*this = *this + f;
@@ -195,21 +129,24 @@ Fraction& Fraction::operator +=(const Fraction& f)
 Fraction Fraction::operator - (const Fraction& frac) const
 {
 	Fraction difference;
-	Fraction f = frac;
-
+	Fraction f1 = frac;
+	Fraction f2 = *this;
+	
 	do{
-		if(denominator == f.denominator)
+		if(f2.denominator == f1.denominator)
 		{
-			difference.numerator = numerator - f.numerator;
+			difference.numerator = f2.numerator - f1.numerator;
+			difference.denominator = f1.denominator;
 			return difference--;
 		}
-		difference.denominator *= f.denominator;
-		difference.numerator *= f.denominator;
-		
-		f.denominator *= denominator;
-		f.numerator *= denominator;
+
+		f1.denominator *= f2.denominator;
+		f1.numerator *= f2.denominator;
+		f2.denominator *= f1.denominator;
+		f2.numerator *= f1.denominator;
 
 	}while(1);
+
 }
 
 Fraction Fraction::operator - (int numb) const
@@ -226,20 +163,8 @@ Fraction& Fraction::operator -= (const Fraction& f)
 
 Fraction::operator double()   //  double(frac)
 {
-	if(positive)
-		return double(numerator)/denominator;
-	else 
-		return -1*double(numerator)/denominator;
+	return double(numerator)/denominator;
 }
-
-int Fraction::get_sign() const
-{
-	if(positive)
-		return 1;
-	else
-		return -1;
-}
-
 
 //only a friend
 istream& operator >> (istream& lhs, Fraction& frac)
@@ -266,26 +191,45 @@ ostream& operator << (ostream& lhs, const Fraction& frac)
 	}
 
 
-
-	if(frac.get_sign() < 0)
-		lhs << "-";
 	//int index;
 	//cout << "numerator is: " << frac.numerator << endl;
-	for(int i = log(frac.numerator); i >= 0; i--)
+	for(int i = int(log(abs(frac.numerator))); i >= 0; i--)
 	{
+
+		cout << "i for numerator is: " << i << "  " << endl;
+		/*if(frac.numerator < 0)
+			lhs << " ";
+		else
+			lhs << " +";*/
 		//index = frac.numerator/int(pow(10, i));
 		//cout << " the index is \n" << index << endl;
-		lhs << super[frac.numerator/int(pow(10, i))];
+		//lhs << "numerator number: " << frac.numerator/*/int(pow(10, i))*/;
 	}
 
-	lhs << "/";
+	lhs << endl << endl << "/" << endl << endl;
 
-	for(int i = log(frac.denominator) + 1; i > 0; i--)
+	for(int i = int(log(frac.denominator)) + 1; i > 0; i--)
 	{
-		lhs << sub[frac.denominator/int(pow(10, i))];
+
+		cout << "i for denominator is: " << i << "  " << endl;
+		//lhs << "denominator number: " << frac.denominator/*/int(pow(10, i))*/;
 	}
 
 	return lhs;
+}
 
+
+int main()
+{
+	Fraction basic(5, 3);
+	Fraction multi_digit(20, 44);
+	Fraction negatives(-2, -5);
+	//Fraction multi_negatives(-33, 999);
+	//Fraction test(4235, 0);
+	//Fraction trial(-1);
+	cout << basic << endl;
+
+	//cout << "basic: " << basic << endl << "multi_digit: " << multi_digit << endl << "try negatives: " << negatives << endl;
+	return 0;
 
 }
