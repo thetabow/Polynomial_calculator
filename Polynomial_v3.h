@@ -15,7 +15,7 @@ typedef Fraction coeffT;
 
 class Polynomial
 {
-	friend ostream& operator << (ostream& lhs, Polynomial& rhs);
+	friend ostream& operator << (ostream& lhs, const Polynomial& rhs);
 private:
 	vector<coeffT> coeff;
 	bool integral_only;
@@ -23,6 +23,7 @@ public:
 	Polynomial(int deg = 0);
 	void set_poly(vector<coeffT>& coefficients); //takes care of setting coefficients
 	int get_degree() const;
+	Polynomial clear();
 	Polynomial& operator -- (int);
 	Polynomial& operator ++ (int);
 	Polynomial operator = (const Polynomial& p);

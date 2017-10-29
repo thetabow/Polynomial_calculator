@@ -22,7 +22,7 @@ private:
 public:
 
 	operator double();
-	Fraction(int num = 1, int denom = 1);
+	Fraction(int num = 0, int denom = 1);
 	Fraction& operator = (const Fraction& f);
 	Fraction& operator = (const int number);
 	Fraction operator + (const Fraction& f) const;

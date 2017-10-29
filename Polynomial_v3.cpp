@@ -187,7 +187,7 @@ Polynomial Polynomial::operator * (const int scalar) const
 								/overload operator
 PURPOSE: divide polynomials
 RETURNS: quotient
-NOTES: 
+NOTES: works with floats, hates Fraction class
 -----------------------------------------------------------------------------------------------------------*/
 Polynomial Polynomial::operator / (const Polynomial& rhs) const
 {
@@ -196,11 +196,14 @@ Polynomial Polynomial::operator / (const Polynomial& rhs) const
 	working = *this;
 	coeffT lead_coeff_rhs = rhs[rhs.get_degree()];
 
+	Polynomial new_coeff(1);
 	for(int j = get_degree(); j - rhs.get_degree() >= 0; j--)
 	{
-		Polynomial new_coeff(1);
-		new_coeff.coeff[0] = working[j]/lead_coeff_rhs;	//is declaring this every loop bad?
+		new_coeff.clear();
+		new_coeff.coeff[0] = working[j]/lead_coeff_rhs;	
 		new_coeff <<= j - rhs.get_degree();
+		cout << "new_coeff : " << new_coeff << endl;
+		cout << "the thing: " << (rhs * new_coeff) << endl;
 		quotient += new_coeff;
 		working -= (rhs * new_coeff);
 
@@ -209,6 +212,18 @@ Polynomial Polynomial::operator / (const Polynomial& rhs) const
 	Polynomial remainder;
 	remainder = working;
 	return quotient;
+}
+
+
+/*-----------------------------------------------------------------------------------------------------------
+FUNCTION NAME: clear
+PURPOSE: make the given polynomial  = to the constant 0
+RETURNS: 0 as a polynomial
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial Polynomial::clear()
+{
+	(*this).coeff.resize(1, 0);
+	return *this;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
@@ -286,7 +301,7 @@ NOTES:
 Polynomial& Polynomial::operator <<= (int shift)
 {
 
-	coeff.insert(coeff.begin(), shift, 0.0);	//position is like this not just 0 lol show alex
+	coeff.insert(coeff.begin(), shift, 0.0);	
 	return *this;
 }
 
@@ -320,32 +335,43 @@ PURPOSE: be able to output a Polynomial object
 RETURNS: ostream reference
 NOTES: only a friend of the Polynomial class, only works for certain font in putty //ask alex which font to use
 ------------------------------------------------------------------------------------------------------------*/
-ostream& operator << (ostream& lhs, Polynomial& rhs)
+ostream& operator << (ostream& lhs, const Polynomial& rhs)
 {
 	const char* super[10] = {
 				"\u2070", "\u00B9", "\u00B2", "\u00B3", "\u2074", 
 				"\u2075", "\u2076", "\u2077", "\u2078", "\u2079"};
-	const char* sub[10] = {
-				"\u2080", "\u2081", "\u2082", "\u2083", "\u2084", 
-				"\u2085", "\u2086", "\u2087", "\u2088", "\u2089"};
 	
 	for (int i = rhs.get_degree(); i >= 0 ; i--)
 	{
-		if(double(rhs[i]) != 0)
+		if(double(rhs[i]) != 0) //if coefficient is 0 it skips the term
 		{
-			if (i < rhs.get_degree())
+			if (i < rhs.get_degree()) //stops it from having a + sign in front of the first term
 			{
-				if(double(rhs[i]) >= 0) 
+				if(double(rhs[i]) >= 0) //prints + for positive
 					lhs << " +";
-				else 
+				else  //prints a space for - coefficients bc negative will print with value of coefficient automatically
 					lhs << " ";
 			}
 
 
 
-			lhs << rhs[i];
+			lhs << rhs[i]; //prints the value of the coeficient
 			if (i>1) 
-				lhs << "x" << super[i];
+			{
+				lhs << "x";
+	
+				int number = i;
+				int digits = int(log10(number));
+				int index;
+
+				for(int j = digits; j >=0; j--)
+				{
+					index = number / pow(10, j);
+					lhs << super[index];
+					number-= index * pow(10, j);
+				}
+			}
+
 			if(i==1)
 				lhs << "x";
 		}
