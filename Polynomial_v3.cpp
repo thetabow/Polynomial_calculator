@@ -261,13 +261,18 @@ Polynomial& Polynomial::operator -- (int)
 PURPOSE: takes a indefinite integral of the polynomial
 RETURNS: the integral
 NOTES: uses postfix
+
+void resize (size_type n, value_type val = value_type());
 ------------------------------------------------------------------------------------------------------------*/
 Polynomial& Polynomial::operator ++ (int) 
 {
-	for(int i = get_degree(); i > 0; i--)
+	coeff.resize(coeff.size() + 1, 0);
+
+	for(int i = get_degree() + 1 ; i > 0; i--)
 	{
 		coeff[i] = coeff[i - 1]/i;
 	}
+	coeff[0] = 0;
 	integral_only = true;
 	return *this;
 }

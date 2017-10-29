@@ -17,8 +17,7 @@ Fraction::Fraction(int num, int denom)
 	}
 	else 
 		denominator = 1;
-	cout << numerator;
-	cout << "/" << denominator << endl;
+	
 }
 
 		
@@ -97,20 +96,24 @@ Fraction& Fraction::operator /= (const Fraction& f)
 Fraction Fraction::operator + (const Fraction& frac) const
 {
 	Fraction sum;
-	Fraction f = frac;
+	Fraction f1 = frac;
+	Fraction f2 = *this;
+
 	do{
-		if(denominator == f.denominator)
+		if(f2.denominator == f1.denominator)
 		{
-			sum.numerator = numerator + f.numerator;
+			sum.numerator = f2.numerator + f1.numerator;
+			sum.denominator = f1.denominator;
 			return sum--;
 		}
-		sum.denominator *= f.denominator;
-		sum.numerator *= f.denominator;
 
-		f.denominator *= denominator;
-		f.numerator *= denominator;
+		f1.denominator *= f2.denominator;
+		f1.numerator *= f2.denominator;
+		f2.denominator *= frac.denominator;
+		f2.numerator *= frac.denominator;
 
 	}while(1);
+
 }
 
 Fraction Fraction::operator + (int numb) const
@@ -131,7 +134,7 @@ Fraction Fraction::operator - (const Fraction& frac) const
 	Fraction difference;
 	Fraction f1 = frac;
 	Fraction f2 = *this;
-	
+
 	do{
 		if(f2.denominator == f1.denominator)
 		{
@@ -142,8 +145,8 @@ Fraction Fraction::operator - (const Fraction& frac) const
 
 		f1.denominator *= f2.denominator;
 		f1.numerator *= f2.denominator;
-		f2.denominator *= f1.denominator;
-		f2.numerator *= f1.denominator;
+		f2.denominator *= frac.denominator;
+		f2.numerator *= frac.denominator;
 
 	}while(1);
 
@@ -178,58 +181,65 @@ istream& operator >> (istream& lhs, Fraction& frac)
 ostream& operator << (ostream& lhs, const Fraction& frac)
 {
 	const char* super[10] = {
-				"\u2070", "\u00B9", "\u00B2", "\u00B3", "\u2074", 
-				"\u2075", "\u2076", "\u2077", "\u2078", "\u2079"};
+		"\u2070", "\u00B9", "\u00B2", "\u00B3", "\u2074", 
+		"\u2075", "\u2076", "\u2077", "\u2078", "\u2079"};
 	const char* sub[10] = {
-				"\u2080", "\u2081", "\u2082", "\u2083", "\u2084", 
-				"\u2085", "\u2086", "\u2087", "\u2088", "\u2089"};
+		"\u2080", "\u2081", "\u2082", "\u2083", "\u2084", 
+		"\u2085", "\u2086", "\u2087", "\u2088", "\u2089"};
 
 	if(frac.denominator == 1)
 	{
 		lhs << frac.numerator;
 		return lhs;
 	}
-
-
-	//int index;
-	//cout << "numerator is: " << frac.numerator << endl;
-	for(int i = int(log(abs(frac.numerator))); i >= 0; i--)
+	if(frac.numerator == 0)
 	{
+		lhs << frac.numerator;
+		return lhs;
+	}
+	if(frac.numerator < 0)
+		lhs << "-";
 
-		cout << "i for numerator is: " << i << "  " << endl;
-		/*if(frac.numerator < 0)
-			lhs << " ";
-		else
-			lhs << " +";*/
-		//index = frac.numerator/int(pow(10, i));
-		//cout << " the index is \n" << index << endl;
-		//lhs << "numerator number: " << frac.numerator/*/int(pow(10, i))*/;
+
+	int number = abs(frac.numerator);
+	int digits = int(log10(number));
+	int index;
+
+	for(int i = digits; i >=0; i--)
+	{
+		index = number / pow(10, i);
+		lhs << super[index];
+		number-= index * pow(10, i);
 	}
 
-	lhs << endl << endl << "/" << endl << endl;
+	lhs << "/";
 
-	for(int i = int(log(frac.denominator)) + 1; i > 0; i--)
+	number = abs(frac.denominator);
+	digits = int(log10(number));
+
+	for(int i = digits; i >=0; i--)
 	{
-
-		cout << "i for denominator is: " << i << "  " << endl;
-		//lhs << "denominator number: " << frac.denominator/*/int(pow(10, i))*/;
+		index = number / pow(10, i);
+		lhs << sub[index];
+		number-= index * pow(10, i);
 	}
 
 	return lhs;
 }
 
-
+/*
 int main()
 {
-	Fraction basic(5, 3);
-	Fraction multi_digit(20, 44);
-	Fraction negatives(-2, -5);
+	Fraction basic(3, 4);
+	Fraction multi_digit(5, 8);
+	//Fraction negatives(-2, -5);
 	//Fraction multi_negatives(-33, 999);
 	//Fraction test(4235, 0);
 	//Fraction trial(-1);
-	cout << basic << endl;
+	cout << basic << " + " << multi_digit << " = " << basic+multi_digit << endl;
+	//cout << basic << endl;
 
 	//cout << "basic: " << basic << endl << "multi_digit: " << multi_digit << endl << "try negatives: " << negatives << endl;
 	return 0;
 
-}
+}*/
