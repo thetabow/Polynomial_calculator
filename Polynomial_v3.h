@@ -2,9 +2,9 @@
 #define __POLYNOMIAL_H__
 
 #include "Fraction.h"
+#include "Vector_v1.h"
 
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -12,6 +12,7 @@ using namespace std;
 //#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])     maybe make this size of a vector 
 
 typedef Fraction coeffT;
+
 
 class Polynomial
 {

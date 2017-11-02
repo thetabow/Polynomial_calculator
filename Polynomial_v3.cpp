@@ -269,6 +269,7 @@ NOTES: uses postfix
 Polynomial& Polynomial::operator ++ (int) 
 {
 	coeff.resize(coeff.size() + 1, 0);
+	cout << "blah";
 
 	for(int i = get_degree() + 1 ; i > 0; i--)
 	{

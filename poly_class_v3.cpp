@@ -1,4 +1,5 @@
 #include "poly_class_v3.h"
+#include "Vector_v1.h"
 
 int main(int argc, char*argv[])
 {
@@ -72,24 +73,4 @@ int main(int argc, char*argv[])
 
 	cout << endl << "Thanks bye" << endl;
 	return 0;	
-}
-
-
-//returns the vector of coefficients
-void user_poly(Polynomial& p)
-{
-	vector<coeffT> c;
-	int deg;
-	coeffT coeff;
-	cout << "Enter degree of polynomial: " << endl;
-	cin >> deg;
-	cout << "Enter " << deg + 1 << " coefficients..." << endl << endl;
-	c.resize(deg + 1);
-	
-	for(int i = deg; i >= 0; i--)
-	{
-		cin >> coeff;
-		c[i] = coeff;
-	}
-	p.set_poly(c);
 }
