@@ -1,4 +1,4 @@
-#include "Polynomial_v3.h"
+#include "Polynomial.h"
 
 /*------------------------------------------------------------------------------------------------------------
 								Polynomial class constructor

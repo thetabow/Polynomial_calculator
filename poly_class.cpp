@@ -1,5 +1,5 @@
-#include "poly_class_v3.h"
-#include "Vector_v1.h"
+#include "poly_class.h"
+#include "Vector.h"
 
 int main(int argc, char*argv[])
 {

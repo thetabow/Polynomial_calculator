@@ -1,5 +1,5 @@
-//first attempt at making a vector class
-//#include "vector_v1.h"
+
+//#include "vector.h"
 
 //default constructor
 template <typename DataType>

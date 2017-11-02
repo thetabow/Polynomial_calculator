@@ -1,10 +1,10 @@
 
 /* -----------------------------------------------------------------------------------------------------------
-FILE NAME: poly_class_v3.h
+FILE NAME: poly_class.h
 
 DESCRITION: header file for Polynomial project
 
-PURPOSE: includes Polynomial class header file into poly_class_v2.cpp
+PURPOSE: includes Polynomial class header file into poly_class.cpp
 
 USAGE: no parameters needed
 
@@ -31,10 +31,10 @@ Zuriah Quinton		10-22-17		replaced display_poly with << operator
 Zuriah Quinton		10-23-17		realized long division is broken, added +=, -=, <<=, >>= to facilitate
 									long division process...fixed long division
 
-
+Zuriah Quinton		11-2-17			finalizing everything after a week and a half of little changes
 
 ------------------------------------------------------------------------------------------------------------*/
 
-#include "Polynomial_v3.h"
+#include "Polynomial.h"
 #include <iostream>
 #include <vector>

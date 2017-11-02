@@ -39,6 +39,6 @@ public:
 	
 };
 
-#include "Vector_v1.cpp" //because of template thing	
+#include "Vector.cpp" //because of template thing	
 
 #endif //__VECTOR_H__

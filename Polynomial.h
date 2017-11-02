@@ -2,7 +2,7 @@
 #define __POLYNOMIAL_H__
 
 #include "Fraction.h"
-#include "Vector_v1.h"
+#include "Vector.h"
 
 #include <iostream>
 
