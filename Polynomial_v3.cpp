@@ -28,8 +28,6 @@ NOTES:
 -----------------------------------------------------------------------------------------------------------*/
 Polynomial::Polynomial(const Polynomial& p)
 {
-
-	cout << "using copy constructor..." << endl;
 	coeff.resize(p.coeff.size());
 	for(int i = 0; i < coeff.size(); i ++)
 	{
@@ -406,14 +404,29 @@ void Polynomial::set_poly(vector<coeffT>& coefficients)
 PURPOSE: takes in user input for polynomial
 RETURNS: ostream reference
 NOTES: only a friend of the Polynomial class
-------------------------------------------------------------------------------------------------------------
-void Polynomial::operator >> (vector<coeffT>& coefficients)
+------------------------------------------------------------------------------------------------------------*/
+istream& operator >> (istream & lhs, Polynomial& p)
 {
-	coeff.resize(coefficients.size());
-	for(int i = 0; i < coefficients.size(); i++)
+	vector<coeffT> c;
+	int deg;
+	coeffT coefficient;
+	cout << "Enter degree of polynomial: " << endl;
+	lhs >> deg;
+	cout << "Enter " << deg + 1 << " coefficients..." << endl << endl;
+	c.resize(deg + 1);
+	
+	for(int i = deg; i >= 0; i--)
 	{
-		coeff[i] = coefficients[i];
+		lhs >> coefficient;
+		c[i] = coefficient;
 	}
+
+	p.coeff.resize(c.size());
+	for(int i = 0; i < c.size(); i++)
+	{
+		p.coeff[i] = c[i];
+	}
+	return lhs;
 }
 
 

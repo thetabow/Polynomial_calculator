@@ -1,5 +1,5 @@
-all: Polynomial_v3.o poly_class_v3.o Fraction.o
-	g++ Polynomial_v3.o poly_class_v3.o Fraction.o -o Polynomial
+all: Vector_v1.o
+	g++ Vector_v1.o -o Vector
 
 %.o: %.cpp %.h
 	g++ -c $<

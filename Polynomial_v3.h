@@ -16,6 +16,7 @@ typedef Fraction coeffT;
 class Polynomial
 {
 	friend ostream& operator << (ostream& lhs, const Polynomial& rhs);
+	friend istream& operator >> (istream& lhs, Polynomial& p);
 private:
 	vector<coeffT> coeff;
 	bool integral_only;
