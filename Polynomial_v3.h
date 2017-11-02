@@ -21,13 +21,10 @@ private:
 	bool integral_only;
 public:
 	Polynomial(int deg = 0);
-	void set_poly(vector<coeffT>& coefficients); //takes care of setting coefficients
-	int get_degree() const;
-	Polynomial clear();
-	Polynomial& operator -- (int);
-	Polynomial& operator ++ (int);
-	Polynomial operator = (const Polynomial& p);
-	Polynomial operator = (int the_constant);
+	Polynomial(const Polynomial& p);
+	Polynomial& operator = (const Polynomial& p);  
+	Polynomial& operator = (int the_constant);
+	coeffT operator [](int degree) const;
 	Polynomial operator + (const Polynomial& rhs) const;
 	Polynomial& operator += (const Polynomial& rhs);
 	Polynomial operator - (const Polynomial& rhs) const;
@@ -36,9 +33,17 @@ public:
 	Polynomial operator * (int scalar) const; 
 	Polynomial operator / (const Polynomial& rhs) const;
 	Polynomial operator % (const Polynomial& rhs) const;
+	Polynomial& operator -- (int);
+	Polynomial& operator ++ (int);
+	Polynomial& operator ++ ();
+	Polynomial clear();
+	bool operator == (const Polynomial& rhs);
+	coeffT operator () (coeffT eval);
 	Polynomial& operator <<= (int shift);
 	Polynomial& operator >>= (int shift);
-	coeffT operator [](int degree) const;
+	int get_degree() const;
+	void set_poly(vector<coeffT>& coefficients); //takes care of setting coefficients	
+
 	//~Polynomial();
 };
 

@@ -169,6 +169,34 @@ Fraction::operator double()   //  double(frac)
 	return double(numerator)/denominator;
 }
 
+
+
+Fraction exp(const Fraction& base, int exponent)
+{
+	if(exponent == 1)
+		return base;
+	if(exponent == 0)
+		return 1;
+	Fraction value;
+	value = 1;
+	Fraction base_cpy;
+	base_cpy = base;
+	if(exponent < 0)
+	{
+		base_cpy.numerator = base.denominator;
+		base_cpy.denominator = base.numerator;
+		exponent *= -1;
+	}
+	while(exponent)
+	{
+		if(exponent&1)
+			value *= base_cpy;
+		exponent>>=1;
+		base_cpy *= base_cpy;
+	}
+	return value;
+}
+
 //only a friend
 istream& operator >> (istream& lhs, Fraction& frac)
 {

@@ -14,6 +14,7 @@ class Fraction {
 	
 	friend ostream& operator << (ostream& lhs, const Fraction& frac);
 	friend istream& operator >> (istream& lhs, Fraction& frac);
+	friend Fraction exp(const Fraction& base, int exponent);
 
 private:
 	int numerator;

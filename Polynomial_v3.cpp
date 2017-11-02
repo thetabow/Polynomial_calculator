@@ -1,7 +1,10 @@
 #include "Polynomial_v3.h"
 
+
 /*------------------------------------------------------------------------------------------------------------
 								Polynomial class constructor
+								THIS IS ALSO DEFAULT CONSTRUCTIOR
+								BECAUSE IT DEFAULTS TO DEG = 0
 PURPOSE: declares a new instance of a polynomial and resizes the coefficient matrix to be one more than the 
 		 the degree of the polynoial
 ARGUMENTS: optional number of degree, defaults to zero
@@ -11,22 +14,26 @@ NOTES:
 Polynomial::Polynomial(int deg)
 {
 	coeff.resize(deg + 1);
+	for(int i = 0; i < deg + 1; i++)
+	coeff[i] = 0;
 	integral_only = false;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
-FUNCTION NAME: Polynomial::set_poly
-PURPOSE: resizes the coefficient vector and sets the coefficients of the polynomial
-ARGUMENTS: vector (of type int) reference
-RETURNS: void
-NOTES: sets the polynomial's coefficient vector
-------------------------------------------------------------------------------------------------------------*/
-void Polynomial::set_poly(vector<coeffT>& coefficients)
+								Polynomial copy constructor
+PURPPOSE: declares a new polynomial and makes it equal to the argument polynomial
+ARGUMENTS: polynomial passed by reference
+RETURNS: nothing
+NOTES:
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial::Polynomial(const Polynomial& p)
 {
-	coeff.resize(coefficients.size());
-	for(int i = 0; i < coefficients.size(); i++)
+
+	cout << "using copy constructor..." << endl;
+	coeff.resize(p.coeff.size());
+	for(int i = 0; i < coeff.size(); i ++)
 	{
-		coeff[i] = coefficients[i];
+		coeff[i] = p[i];
 	}
 }
 
@@ -36,8 +43,9 @@ PURPOSE: assign contents of one Polynomial class object to another
 RETURNS: the Polynomial assigned (just like normal = operator)
 NOTES: 
 ------------------------------------------------------------------------------------------------------------*/
-Polynomial Polynomial::operator = (const Polynomial& p)
+Polynomial& Polynomial::operator = (const Polynomial& p)
 {
+	//cout << "using assignment operator..." << endl;
 	integral_only = false;
 	coeff.resize(p.coeff.size());
 	for(int i = 0; i < p.coeff.size(); i++)
@@ -45,7 +53,7 @@ Polynomial Polynomial::operator = (const Polynomial& p)
 		coeff[i] = p.coeff[i];
 	}
 
-	return p;
+	return *this;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
@@ -54,7 +62,7 @@ PURPOSE: assign contents of int object to a Polynomial as a constant
 RETURNS: the constant assigned except now as a polynomial of degree 0
 NOTES: 
 ------------------------------------------------------------------------------------------------------------*/
-Polynomial Polynomial::operator = (int the_constant)
+Polynomial& Polynomial::operator = (int the_constant)
 {
 	integral_only = false;
 	coeff.resize(1);
@@ -202,28 +210,12 @@ Polynomial Polynomial::operator / (const Polynomial& rhs) const
 		new_coeff.clear();
 		new_coeff.coeff[0] = working[j]/lead_coeff_rhs;	
 		new_coeff <<= j - rhs.get_degree();
-		cout << "new_coeff : " << new_coeff << endl;
-		cout << "the thing: " << (rhs * new_coeff) << endl;
 		quotient += new_coeff;
 		working -= (rhs * new_coeff);
-
-		
 	}
 	Polynomial remainder;
 	remainder = working;
 	return quotient;
-}
-
-
-/*-----------------------------------------------------------------------------------------------------------
-FUNCTION NAME: clear
-PURPOSE: make the given polynomial  = to the constant 0
-RETURNS: 0 as a polynomial
------------------------------------------------------------------------------------------------------------*/
-Polynomial Polynomial::clear()
-{
-	(*this).coeff.resize(1, 0);
-	return *this;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
@@ -232,7 +224,6 @@ PURPOSE: part of dividing polynomials
 RETURNS: the remainder after division
 NOTES: 
 -----------------------------------------------------------------------------------------------------------*/
-
 Polynomial Polynomial::operator % (const Polynomial& rhs) const
 {
 	Polynomial quotient(get_degree() - rhs.get_degree());
@@ -240,15 +231,14 @@ Polynomial Polynomial::operator % (const Polynomial& rhs) const
 	working = *this;
 	coeffT lead_coeff_rhs = rhs[rhs.get_degree()];
 
+	Polynomial new_coeff(1);
 	for(int j = get_degree(); j - rhs.get_degree() >= 0; j--)
 	{
-		Polynomial new_coeff(1);
-		new_coeff.coeff[0] = working[j]/lead_coeff_rhs;	//is declaring this every loop bad?
+		new_coeff.clear();
+		new_coeff.coeff[0] = working[j]/lead_coeff_rhs;	
 		new_coeff <<= j - rhs.get_degree();
 		quotient += new_coeff;
 		working -= (rhs * new_coeff);
-
-		
 	}
 	Polynomial remainder;
 	remainder = working;
@@ -267,6 +257,7 @@ Polynomial& Polynomial::operator -- (int)
 	{
 		coeff[i] = coeff[i + 1] * (i + 1);
 	}
+	coeff[get_degree()] = 0;
 	integral_only = false;
 	return *this;
 }
@@ -276,8 +267,6 @@ Polynomial& Polynomial::operator -- (int)
 PURPOSE: takes a indefinite integral of the polynomial
 RETURNS: the integral
 NOTES: uses postfix
-
-void resize (size_type n, value_type val = value_type());
 ------------------------------------------------------------------------------------------------------------*/
 Polynomial& Polynomial::operator ++ (int) 
 {
@@ -290,6 +279,68 @@ Polynomial& Polynomial::operator ++ (int)
 	coeff[0] = 0;
 	integral_only = true;
 	return *this;
+}
+
+/*------------------------------------------------------------------------------------------------------------
+									++ overload operator
+PURPOSE: takes a definite integral so that it can be evaluated at limits using other function
+RETURNS: polynomial reference
+NOTES: same as indefinite except no +C at end uses prefix
+------------------------------------------------------------------------------------------------------------*/
+Polynomial& Polynomial::operator ++()
+{
+	coeff.resize(coeff.size() + 1, 0);
+
+	for(int i = get_degree() + 1 ; i > 0; i--)
+	{
+		coeff[i] = coeff[i - 1]/i;
+	}
+	coeff[0] = 0;
+	return *this;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+FUNCTION NAME: clear
+PURPOSE: make the given polynomial  = to the constant 0
+RETURNS: 0 as a polynomial
+-----------------------------------------------------------------------------------------------------------*/
+Polynomial Polynomial::clear()
+{
+	(*this).coeff.resize(1, 0);
+	return *this;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+									== overload operator
+PUROSE: tests if 2 polynomials are equal
+RETURNS: true/false
+NOTES:
+-----------------------------------------------------------------------------------------------------------*/
+bool Polynomial::operator == (const Polynomial& rhs)
+{
+	if(get_degree() != rhs.get_degree())
+		return false;
+	for(int i = 0; i <= get_degree(); i++)
+	{
+		if(coeff[i] != rhs[i])
+			return false;
+	}
+	return true;
+}
+
+/*-----------------------------------------------------------------------------------------------------------
+									() overload operator
+PURPOSE: evaluate a polynomial at a given x
+RETURNS: value at that spot
+NOTES:
+-----------------------------------------------------------------------------------------------------------*/
+coeffT Polynomial::operator () (coeffT eval)
+{
+	coeffT value;
+	value = 0;
+	for(int i = get_degree(); i >=0; i--)
+		value += coeff[i]*exp(eval, i);
+	return value;
 }
 
 /*-----------------------------------------------------------------------------------------------------------
@@ -328,6 +379,43 @@ int Polynomial::get_degree() const
 {
 	return coeff.size() - 1;
 }
+
+/*-----------------------------------------------------------------------------------------------------------
+FUNCTION NAME: Polynomial::set_poly
+PURPOSE: resizes the coefficient vector and sets the coefficients of the polynomial
+ARGUMENTS: vector (of type int) reference
+RETURNS: void
+NOTES: sets the polynomial's coefficient vector
+------------------------------------------------------------------------------------------------------------*/
+void Polynomial::set_poly(vector<coeffT>& coefficients)
+{
+	coeff.resize(coefficients.size());
+	for(int i = 0; i < coefficients.size(); i++)
+	{
+		coeff[i] = coefficients[i];
+	}
+}
+
+
+
+
+
+
+/*------------------------------------------------------------------------------------------------------------
+								>> overload operator 
+PURPOSE: takes in user input for polynomial
+RETURNS: ostream reference
+NOTES: only a friend of the Polynomial class
+------------------------------------------------------------------------------------------------------------
+void Polynomial::operator >> (vector<coeffT>& coefficients)
+{
+	coeff.resize(coefficients.size());
+	for(int i = 0; i < coefficients.size(); i++)
+	{
+		coeff[i] = coefficients[i];
+	}
+}
+
 
 /*------------------------------------------------------------------------------------------------------------
 								<< overload operator 
@@ -382,10 +470,3 @@ ostream& operator << (ostream& lhs, const Polynomial& rhs)
 	return lhs;
 }
 
-/*------------------------------------------------------------------------------------------------------------
-								>> overload operator 
-PURPOSE: takes in user input for polynomial
-RETURNS: ostream reference
-NOTES: only a friend of the Polynomial class
-------------------------------------------------------------------------------------------------------------*/
-//nothing yet
