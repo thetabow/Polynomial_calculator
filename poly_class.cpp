@@ -4,7 +4,7 @@
 int main(int argc, char*argv[])
 {
 	Polynomial poly[3];
-	coeffT num1, num2;
+	coeffT upper, lower;
 
 	cin >> poly[0];
 	cout << "\t" << poly[0] << endl;
@@ -28,12 +28,12 @@ int main(int argc, char*argv[])
 		cout << "(" << poly[1] << ") / (" << poly[0] << ") \n\t=  " << poly[1] / poly[0] << "\t Remainder: " << poly[1] % poly[0] << endl << endl;
 
 	cout << "f(x) = " << poly[0] << endl << "x = ";
-	cin >> num1;
-	cout << "f(" << num1 << ") = " << poly[0](num1) << endl << endl;
+	cin >> upper;
+	cout << "f(" << upper << ") = " << poly[0](upper) << endl << endl;
 
 	cout << "g(x) = " << poly[1] << endl << "x = ";
-	cin >> num2;
-	cout << "g(" << num2 << ") = " << poly[1](num2) << endl << endl;
+	cin >> lower;
+	cout << "g(" << lower << ") = " << poly[1](lower) << endl << endl;
 
 
 	poly[2] = poly[0];
@@ -47,28 +47,34 @@ int main(int argc, char*argv[])
 
 	poly[2] = poly[0];
 	cout << "Integrating " << poly[2] << endl;
-	cout << "The indefinite integral of the first polynomial is: \n\t";
+	cout << "The indefinite integral is: \n\t";
 	cout << poly[2]++ << endl << endl;
-	cout << "Enter lower bound for integral : ";
-	cin >> num2;
-	cout << "Enter upper bound for integral: ";
-	cin >> num1;
+	cout << "Enter lower bound for definite integral : ";
+	cin >> lower;
+	cout << "Enter upper bound for definite integral: ";
+	cin >> upper;
 	poly[2] = poly[0];
 	++poly[2];
-	cout << (poly[2](num1) - (poly[2])(num2) );
+	if(lower <= upper)
+		cout << (poly[2](upper) - (poly[2])(lower) );
+	else
+		cout << (poly[2](lower) - (poly[2])(upper) );
 	cout << endl << endl;
 
 	poly[2] = poly[1];
 	cout << "Integrating " << poly[2] << endl;
-	cout << "The indefinite integral of the second polynomial is: \n\t";
+	cout << "The indefinite integral is: \n\t";
 	cout << poly[2]++ << endl << endl;
-	cout << "Enter lower bound for integral : ";
-	cin >> num2;
-	cout << "Enter upper bound for integral: ";
-	cin >> num1;
+	cout << "Enter lower bound for definite integral : ";
+	cin >> lower;
+	cout << "Enter upper bound for definite integral: ";
+	cin >> upper;
 	poly[2] = poly[1];
 	++poly[2];
-	cout << (poly[2](num1) - (poly[2])(num2) );
+	if(lower <= upper)
+		cout << (poly[2](upper) - poly[2](lower) );
+	else
+		cout << (poly[2](lower) - (poly[2])(upper) );
 	cout << endl << endl;
 
 
